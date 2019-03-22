@@ -1,0 +1,29 @@
+dd if=dev/urandom of=keyfile bs=1M count=1
+# normal
+veracrypt -t -c --random-source /dev/urandom
+# hidden
+veracrypt -t -c --random-source /dev/urandom
+#mount
+veracrypt vol /mnt
+veracrypt --pim 678 -k keyfile -p password --non-interactive vol /mnt
+#umount
+veracrypt -d /mnt
+#cryptsetup 2.0.3 
+cryptsetup open --type tcrypt --veracrypt --veracrypt-query-pim --key-file keyfile vol vol
+cryptsetup open --type tcrypt --veracrypt --tcrypt-hidden --veracrypt-query-pim --key-file keyfile vol vol
+mount /dev/mapper/vol /mnt
+cryptsetup --cipher aes-xts-plain64 --key-size 512 --hash sha512 --iter-time 10000 luksFormat vol
+cryptsetup luksAddKey vol keyfile
+cryptsetup luksKillSlot vol 1
+mkfs.ext4 /dev/mapper/vol
+#cryptsetup luksOpen --key-file keyfile vol vol
+cryptsetup luksOpen vol vol
+mount /dev/mapper/vol /mnt
+#nuke
+cryptsetup luksDump /dev/sdb2
+cryptsetup luksAddNuke /dev/sdb2
+cryptsetup luksHeaderBackup --header-backup-file luksheader.back /dev/sdb2
+openssl enc -aes-256-cbc -salt -in luksheader.back -out luksheader.back.enc
+openssl enc -d -aes-256-cbc -in luksheader.back.enc -out luksheader.back
+cryptsetup luksHeaderRestore --header-backup-file luksheader.back /dev/sdb2
+https://github.com/login

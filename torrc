@@ -1,0 +1,13 @@
+DataDirectory /home/anon/tor/Browser/TorBrowser/Data/Tor
+DirReqStatistics 0
+#排除蜜罐节点：中国，香港，澳门，新加坡，泰国，巴基斯坦，白俄罗斯，俄罗斯，伊朗，越南，菲律宾，马来西亚，古巴
+ExcludeNodes {cn},{hk},{mo},{sg},{th},{pk},{by},{ru},{ir},{vn},{ph},{my},{cu},{??}
+ExcludeExitNodes {cn},{hk},{mo},{sg},{th},{pk},{by},{ru},{ir},{vn},{ph},{my},{cu},{??}
+GeoIPFile /home/anon/tor/Browser/TorBrowser/Data/Tor/geoip
+GeoIPv6File /home/anon/tor/Browser/TorBrowser/Data/Tor/geoip6
+Socks5Proxy 10.24.10.1:9050
+ReachableAddresses *:80,*:443
+SocksPort 9050
+StrictNodes 1
+StrictExitNodes 1
+ExitNodes {us}
